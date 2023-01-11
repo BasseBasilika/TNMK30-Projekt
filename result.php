@@ -1,36 +1,6 @@
-<html>
-    <head>
-    <meta charset="utf-8">
-      
-        <link rel="stylesheet" href="style.css">
-        <script src="effect.js" defer></script>
-    </head>
-    <body>
-    <section id="header">
-    <div class="header container">
-      <div class="nav-bar">
-        <div class="brand">
-          <a href="index.html"><img src="lego logo 4.0.png" alt="Logo"></a>
-        </div>
-        <div class="nav-list">
-          <div class="hamburger"><div class="bar"></div></div>
-          <ul>
-            <li><a href="index.html" data-after="Home">Home</a></li>
-            <li><a href="about.html" data-after="Service">About</a></li>
-            <li><a href="search.php" data-after="Contact">Search</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  </section>
-
-</html>
-
 <?php
 
-
+include("navbar.html");
 $connection = mysqli_connect("mysql.itn.liu.se", "lego", "", "lego");
 
  
@@ -45,26 +15,27 @@ if ($conn->connect_error) {
 
 $SetID = $_GET['set'];
 
-$query = "SELECT * FROM sets WHERE SetID = '$SetID'";
-
-$result = mysqli_query($connection,  $query);
-
-
-
-$info = "SELECT inventory.Quantity, inventory.SetID , inventory.ItemID, parts.Partname, images.ItemID, images.ItemtypeID,images.ColorID,
-images.has_gif, images.has_jpg, images.has_largegif, images.has_largejpg, colors.Colorname FROM inventory, parts, colors, images WHERE
-inventory.SetID =  '$SetID' AND parts.PartID = inventory.ItemID AND colors.ColorID = inventory.ColorID AND images.ItemID = inventory.ItemID
-AND colors.ColorID = images.ColorID ORDER BY inventory.Quantity DESC";
+$setname  = mysqli_query($connection, "SELECT sets.Setname FROM sets WHERE sets.SetID= '$SetID'");
+$nameArray = mysqli_fetch_array($setname);
+$setnamedisplay = $nameArray['Setname'];
 
 
+$info = mysqli_query($connection, "SELECT inventory.Quantity, inventory.SetID , inventory.ItemID, parts.Partname, images.ItemID, images.ItemtypeID,images.ColorID,
+images.has_gif, images.has_jpg, images.has_largegif, images.has_largejpg, colors.Colorname 
+FROM inventory, colors, images, parts
+WHERE
+inventory.SetID =  '$SetID'AND colors.ColorID=inventory.ColorID AND images.ItemID=inventory.ItemID AND images.ColorID=inventory.ColorID
+AND images.ItemtypeID=inventory.ItemtypeID AND parts.PartID=inventory.ItemID ORDER BY inventory.Quantity DESC");
 
-$result = mysqli_query($connection, $info);
 
-if(1 == 1){
+
+
+
+
   echo("
-  <h3 class='mycss'> parts included in set $SetID ($setname):</h3>
+  <h3 class='mycss'> Parts included in set $SetID ($setnamedisplay):</h3>
 <table>
-   <tr>
+   <tr class = 'displaybricks'>
      <td>Image </td>
      <td> part name </td>
      <td> Color </td>
@@ -72,9 +43,13 @@ if(1 == 1){
    </tr>
 </table>"
 
-);}
+);
 
-while   ($row =  mysqli_fetch_array($result)){
+
+  
+
+
+while   ($row =  mysqli_fetch_array($info)){
 
 
 
@@ -122,8 +97,8 @@ else if ($gif){
 
 print (
 
- "<table class = 'sheesh' >
-     <tr>
+ "<table >
+     <tr class = 'displaybricks'>
         <td> <img src= $imagesrc> </td>
         <td> $invpart </td>
         <td> $colorsname </td>

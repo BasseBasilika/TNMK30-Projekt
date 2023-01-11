@@ -1,46 +1,5 @@
-<html>
-    <head>
-    <meta charset="utf-8">
-      
-        <link rel="stylesheet" href="style.css">
-        <script src="effect.js" defer></script>
-    </head>
-    <body>
-  <section id="header">
-    <div class="header container">
-      <div class="nav-bar">
-        <div class="brand">
-          <a href="index.html"><img src="lego logo 4.0.png" alt="Logo"></a>
-        </div>
-        <div class="nav-list">
-          <div class="hamburger"><div class="bar"></div></div>
-          <ul>
-            <li><a href="index.html" data-after="Home">Home</a></li>
-            <li><a href="about.html" data-after="Service">About</a></li>
-            <li><a href="search.php" data-after="Contact">Search</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  </section>
-
-  <form class= "form" action = "search.php" method ="POST" >
-        <select name="selectedValue">
-            <option value="Set-id">Set-id</option>
-            
-            <option value="Set-name">Set-name</option>
-        </select>
-            <label for="text"> Set id</label> <br>
-            <input type="text" name = "text" id = "text" required>
-        </div>
-        <input type="submit" value = "input">
-     </form> 
-</html>
-
 <?php
-
+include("search.html");
 switch($_POST['selectedValue']){
     case 'Set-id':
      
@@ -57,7 +16,7 @@ switch($_POST['selectedValue']){
     
     
     $searchid = mysqli_query($connection, "SELECT sets.SetID, images.has_largejpg, images.has_largegif, images.has_jpg, images.has_gif FROM sets, images
-    WHERE sets.SetID = '$SetID' AND images.ItemtypeID = 'S' AND images.ItemID = sets.SetID");
+    WHERE sets.SetID LIKE '$SetID' AND images.ItemtypeID = 'S' AND images.ItemID = sets.SetID");
     
         while($row = mysqli_fetch_array($searchid)){
              
@@ -110,9 +69,7 @@ switch($_POST['selectedValue']){
 
     $setname = $_POST['text'];
 
-    $query = "SELECT * FROM sets WHERE Setname = '$setname'";
-
-    $result = mysqli_query($connection,  $query);
+   
 
 $searchname = mysqli_query($connection, "SELECT sets.SetID, sets.Setname, images.has_largejpg, images.has_largegif, images.has_jpg, images.has_gif FROM sets, images
 WHERE sets.Setname LIKE '%$setname%' AND images.ItemtypeID = 'S' AND images.ItemID = sets.SetID ORDER BY CASE
@@ -146,7 +103,7 @@ $gifL = $row['has_largegif'];
             $imagesrc = "http://www.itn.liu.se/~stegu76/img.bricklink.com/SL/$setid1.gif";   
         }
         else {
-            $imagesrc = "https://weber.itn.liu.se/~stegu76/img.bricklink.com/SL/375-2.jpg"; 
+            $imagesrc = "kossa.jpg"; 
 
         }
         

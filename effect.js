@@ -1,8 +1,15 @@
-function myFunction(dada) {
+function inspectSet(setID) {
+    window.location.href = "../Lego%20hemsida/result.php?set=" + setID;
+}
 
-    window.location.href = "../Lego%20hemsida/result.php?set=" + dada;
-    
-    
-   
+function Searchhelp() {
 
+    if (document.getElementById("infotexthelp").style.display == "block") {
+
+        document.getElementById("infotexthelp").style.display = "none";
+    }
+    else {
+        document.getElementById("infotexthelp").style.display = "block";
+
+    }
 }
